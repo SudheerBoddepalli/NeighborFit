@@ -1,0 +1,6 @@
+[
+  { "name": "Greenwood", "safety": 8, "affordability": 6, "cafes": 10 },
+  { "name": "Riverside", "safety": 6, "affordability": 9, "cafes": 5 },
+  { "name": "Sunnyvale", "safety": 9, "affordability": 4, "cafes": 8 },
+  { "name": "Hilltown", "safety": 5, "affordability": 8, "cafes": 3 }
+]
