@@ -4,7 +4,7 @@ import axios from 'axios';
 function App() {
   const [prefs, setPrefs] = useState({ safety: 5, affordability: 5, cafes: 5 });
   const [results, setResults] = useState([]);
-  const [error, setError] = useState(''); // ✅ new state for error
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setPrefs({ ...prefs, [e.target.name]: Number(e.target.value) });
@@ -13,13 +13,13 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/match', prefs);
+      const res = await axios.post('https://neighborfit-backend-ybhn.onrender.com/api/match', prefs);
       setResults(res.data);
-      setError(''); // ✅ clear error on success
+      setError('');
     } catch (err) {
       console.error(err);
       setResults([]);
-      setError(err.response?.data?.error || 'Server error'); // ✅ display error
+      setError(err.response?.data?.error || 'Server error');
     }
   };
 
@@ -47,7 +47,6 @@ function App() {
         </button>
       </form>
 
-      {/* ✅ Error message display */}
       {error && (
         <div className="mt-4 text-red-600 font-semibold">
           {error}
