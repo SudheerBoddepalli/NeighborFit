@@ -1,3 +1,21 @@
+// server/index.js
+
+const express = require('express');
+const cors = require('cors');
+const { MongoClient } = require('mongodb');
+require('dotenv').config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+
+// MongoDB connection
+const client = new MongoClient(process.env.MONGO_URI);
+
+// Matching API route
 app.post('/api/match', async (req, res) => {
   try {
     await client.connect();
@@ -32,4 +50,9 @@ app.post('/api/match', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
