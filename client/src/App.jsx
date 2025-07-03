@@ -1,4 +1,3 @@
-// src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './LandingPage';
@@ -9,7 +8,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/match" element={<MatcherPage />} />
+        <Route path="/matcher" element={<MatcherPage />} />
       </Routes>
     </Router>
   );
