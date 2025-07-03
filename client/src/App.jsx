@@ -24,42 +24,55 @@ function App() {
   };
 
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">NeighborFit Matcher</h1>
+    <div className="min-h-screen bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center p-4">
+      <div className="bg-white w-full max-w-2xl shadow-xl rounded-xl p-8">
+        <h1 className="text-4xl font-bold text-center text-purple-700 mb-6">🏘️ NeighborFit Matcher</h1>
 
-      <form onSubmit={handleSubmit} className="space-y-3">
-        {['safety', 'affordability', 'cafes'].map((cat) => (
-          <div key={cat}>
-            <label className="block capitalize">{cat} (0–10)</label>
-            <input
-              type="range"
-              name={cat}
-              min="0"
-              max="10"
-              value={prefs[cat]}
-              onChange={handleChange}
-              className="w-full"
-            />
-          </div>
-        ))}
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-          Find Match
-        </button>
-      </form>
-
-      {error && (
-        <div className="mt-4 text-red-600 font-semibold">
-          {error}
-        </div>
-      )}
-
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold">Top Matches</h2>
-        <ul className="mt-2 list-disc list-inside">
-          {results.map((n, idx) => (
-            <li key={idx}>{n.name} (Score: {n.score.toFixed(2)})</li>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {['safety', 'affordability', 'cafes'].map((cat) => (
+            <div key={cat}>
+              <label className="block text-gray-800 font-semibold mb-1 capitalize">
+                {cat} (0–10): <span className="text-purple-600">{prefs[cat]}</span>
+              </label>
+              <input
+                type="range"
+                name={cat}
+                min="0"
+                max="10"
+                value={prefs[cat]}
+                onChange={handleChange}
+                className="w-full accent-purple-600"
+              />
+            </div>
           ))}
-        </ul>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-200"
+            >
+              🔍 Find Match
+            </button>
+          </div>
+        </form>
+
+        {error && (
+          <div className="mt-4 text-red-600 font-medium text-center">{error}</div>
+        )}
+
+        <div className="mt-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top Matches</h2>
+          <div className="grid gap-4">
+            {results.map((n, idx) => (
+              <div
+                key={idx}
+                className="bg-purple-100 border border-purple-300 p-4 rounded-lg shadow-sm text-purple-900 font-medium"
+              >
+                🌟 {n.name} — <span className="font-bold">Score: {n.score.toFixed(2)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
