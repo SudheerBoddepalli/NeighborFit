@@ -24,14 +24,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-100 to-blue-100 flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-2xl shadow-xl rounded-xl p-8">
-        <h1 className="text-4xl font-bold text-center text-purple-700 mb-6">🏘️ NeighborFit Matcher</h1>
+    <div className="min-h-screen bg-gradient-to-r from-violet-200 via-indigo-200 to-blue-200 flex items-center justify-center px-4 py-8">
+      <div className="bg-white w-full max-w-3xl rounded-2xl shadow-2xl p-10 space-y-8">
+        <h1 className="text-5xl font-bold text-center text-purple-700 flex items-center justify-center gap-2">
+          🏡 NeighborFit Matcher
+        </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {['safety', 'affordability', 'cafes'].map((cat) => (
             <div key={cat}>
-              <label className="block text-gray-800 font-semibold mb-1 capitalize">
+              <label className="block font-semibold text-gray-700 mb-1 capitalize">
                 {cat} (0–10): <span className="text-purple-600">{prefs[cat]}</span>
               </label>
               <input
@@ -49,7 +51,7 @@ function App() {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-2 rounded-lg shadow-md transition-all duration-200"
+              className="bg-purple-700 hover:bg-purple-800 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-300"
             >
               🔍 Find Match
             </button>
@@ -57,22 +59,25 @@ function App() {
         </form>
 
         {error && (
-          <div className="mt-4 text-red-600 font-medium text-center">{error}</div>
+          <div className="text-center text-red-600 font-semibold mt-4">{error}</div>
         )}
 
-        <div className="mt-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Top Matches</h2>
-          <div className="grid gap-4">
-            {results.map((n, idx) => (
-              <div
-                key={idx}
-                className="bg-purple-100 border border-purple-300 p-4 rounded-lg shadow-sm text-purple-900 font-medium"
-              >
-                🌟 {n.name} — <span className="font-bold">Score: {n.score.toFixed(2)}</span>
-              </div>
-            ))}
+        {results.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">🌟 Top Matches</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              {results.map((n, idx) => (
+                <div
+                  key={idx}
+                  className="bg-purple-100 border-l-4 border-purple-500 p-4 rounded-lg shadow-sm"
+                >
+                  <h3 className="text-xl font-semibold text-purple-800">{n.name}</h3>
+                  <p className="text-gray-700 mt-1">⭐ Score: <span className="font-bold">{n.score.toFixed(2)}</span></p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
