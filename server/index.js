@@ -6,29 +6,35 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-const client = new MongoClient(process.env.MONGO_URI);
+// Persistent MongoDB Connection Setup
 let db;
 
 async function connectToDatabase() {
+  if (db) return db;
+
   try {
-    if (!db) {
-      await client.connect();
-      db = client.db('neighborfit');
-      console.log('✅ Connected to MongoDB');
-    }
+    const client = await MongoClient.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    db = client.db('neighborfit');
+    console.log('✅ Connected to MongoDB');
+    return db;
   } catch (err) {
-    console.error('❌ MongoDB Connection Error:', err);
+    console.error('❌ MongoDB Connection Error:', err.message);
+    throw err;
   }
 }
 
-// Matching API route
+// Match API
 app.post('/api/match', async (req, res) => {
   try {
-    await connectToDatabase(); // connect only once
+    const db = await connectToDatabase();
     const neighborhoods = await db.collection('neighborhoods').find({}).toArray();
 
     const { safety = 0, affordability = 0, cafes = 0 } = req.body;
@@ -48,16 +54,21 @@ app.post('/api/match', async (req, res) => {
         (n.affordability ?? 0) * affordability +
         (n.cafes ?? 0) * cafes
       ) / totalWeight;
-      return { name: n.name || 'Unknown', score };
+
+      return {
+        name: n.name || 'Unknown',
+        score,
+      };
     }).sort((a, b) => b.score - a.score);
 
-    res.json(scores.slice(0, 3));
+    res.json(scores.slice(0, 3)); // Return top 3
   } catch (err) {
-    console.error('❌ Match Route Error:', err);
-    res.status(500).json({ error: 'Server error' });
+    console.error('❌ Match Route Error:', err.message);
+    res.status(500).json({ error: err.message || 'Server error' });
   }
 });
 
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
